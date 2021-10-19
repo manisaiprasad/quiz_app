@@ -1,36 +1,27 @@
 var express = require('express');
-var router = express.Router();
+const db = require('./db-configb')
 
+var router = express.Router();
 /* GET home page. */
-router.get('/',checkAuthenticated, function(req, res, next) {
+router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
-
 
 router.route('/signup')
   .get(function(req, res) {
     res.render('signup')
   })
+  .post(function(req, res) {
+    res.send(req.body)
+  })
 
 router.route('/login')
+  .post(function(req, res) {
+    console.log(req)
+    res.send(req.body)
+  })
   .get(function(req, res) {
     res.render('login')
   })
-
-
-function checkAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next()
-  }
-  
-  res.redirect('/login')
-}
-  
-function checkNotAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return res.redirect('/')
-    }
-  next()
-}
 
 module.exports = router;

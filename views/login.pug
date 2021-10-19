@@ -6,12 +6,12 @@ block content
                 .card.border-0.shadow.rounded-3.my-5
                     .card-body.p-4.p-sm-5
                         h5.card-title.text-center.mb-5.fw-light.fs-5 Log In
-                        form
+                        form#form.form(action='/login', method='POST')
                             .form-floating.mb-3
-                                input#floatingInput.form-control(type='email' placeholder='name@example.com')
+                                input#floatingInput.form-control(type='email' required='true' name='email' placeholder='name@example.com')
                                 label(for='floatingInput') Email address
                             .form-floating.mb-3
-                                input#floatingPassword.form-control(type='password' placeholder='Password')
+                                input#floatingPassword.form-control(type='password' required='true' name='password' placeholder='Password')
                                 label(for='floatingPassword') Password
                             .text-center
                                 button.btn.btn-primary.btn-login.text-uppercase.fw-bold.text-center(type='submit') Log In
