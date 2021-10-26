@@ -1,7 +1,31 @@
 var express = require('express');
-const db = require('./db-config')
+const db = require('../configs/db-config')
 var router = express.Router();
 const bcrypt = require('bcrypt');
+const passport = require('passport');
+
+const intializePassport = require('../configs/passport-config');
+
+intializePassport(passport, email => {
+    getUserByEmail(db,email).then(rows => {
+      return rows[0];
+    });
+  }, userid => {
+    return getUserById(db, userid);
+  });
+
+function getUserById(db, id) {
+  db("users")
+    .where('id', id ).then(rows => {
+      return rows[0];
+    }
+  );
+}
+
+function getUserByEmail(db, user_email) {
+  return db("users")
+    .where('email',user_email).then(rows => rows[0]);
+}
 
 function insertUser(db, newUser) {
   return db
@@ -12,18 +36,12 @@ function insertUser(db, newUser) {
     });
 }
 
-function getAllEmails(db) {
-  return db
-    .select("email")
-    .from("users")
-    .then(rows => rows);
-}
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: req.user.full_name });
 });
 
+/* signup page. */
 router.route('/signup')
   .get(function(req, res) {
     res.render('signup')
@@ -40,30 +58,19 @@ router.route('/signup')
     }
   });
 
+/* login page. */
 router.route('/login')
   .get(function(req, res) {
+    console.log(getUserByEmail(db, 'manisaiprasadam@gmail.com').then(rows => {
+      return rows[0];
+    }));
     res.render('login')
   })
-  .post(async(req, res) => {
-    try {
-      const { email, password } = req.body;
-      const user = await db.select("*").from("users").where({ email });
-      if (user.length === 0) {
-        res.sendStatus(404);
-      } else {
-        const validPassword = await bcrypt.compare(password, user[0].password);
-        if (validPassword) {
-          req.session.user = user[0];
-          res.redirect('/');
-        } else {
-          res.sendStatus(401);
-        }
-      }
-    } catch (err) {
-      console.log(err);
-      res.sendStatus(500);
-    }
-  });
+  .post(passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true
+    }));
 
 router.get('/logout', function(req, res) {
   
