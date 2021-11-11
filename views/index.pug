@@ -1,5 +1,22 @@
 extends layout
-
 block content
-  h1= title
-  p Welcome to #{title}
+  header.main-header
+    .container
+      nav.navbar.navbar-expand-lg.main-nav.px-0
+        #mainMenu.collapse.navbar-collapse.justify-content-center
+          ul.navbar-nav.ml-auto.text-uppercase.f1
+            li
+              a.active.active-first(href='#home') home
+            li
+              a(href='/new_quiz') New Quiz
+            li
+              a(href='/search') search
+            li
+              a(href='/your_quiz') your quizs
+            li
+              a(href='/profile') Profile
+            li
+              a(href='/logout') logout
+  .container 
+    h1= title
+    p Welcome to #{title}
