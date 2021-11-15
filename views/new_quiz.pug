@@ -1,0 +1,79 @@
+extends layout
+block content
+  header.main-header
+    .container
+      nav.navbar.navbar-expand-lg.main-nav.px-0
+        #mainMenu.collapse.navbar-collapse.justify-content-center
+          ul.navbar-nav.ml-auto.text-uppercase.f1
+            li
+              a(href='/') home
+            li
+              a.active.active-first(href='/new_quiz') New Quiz
+            li
+              a(href='/search') search
+            li
+              a(href='/your_quiz') your quizs
+            li
+              a(href='/profile') Profile
+            li
+              a(href='/logout') logout
+
+  section.new-quiz-section
+    h1 New Quiz
+    iv.container
+      form(action='/new_quiz' method='post')
+        .row
+          .col-md-6
+            .form-group
+              label.form-control-label New Quiz
+              input.form-control(type='text' name='quiz_name' placeholder='Quiz Name')
+          .col-md-6
+            .form-group
+              label.form-control-label Quiz Description
+              textarea.form-control(name='quiz_description' placeholder='Quiz Description')
+          .col-md-6
+            .form-group
+              label.form-control-label Quiz Type
+              select.form-control(name='quiz_type')
+                option.option-1 Select Quiz Type
+                option.option-2 True or False
+          .col-md-6
+            .form-group
+              label.form-control-label Quiz Category
+              select.form-control(name='quiz_category')
+                option.option-1 Select Quiz Category
+                option.option-2 General Knowledge
+                option.option-3 Science
+                option.option-4 Math
+                option.option-5 History
+                option.option-6 Geography
+                option.option-7 Programming
+                option.option-8 Sports
+                option.option-9 Other 
+
+          .col-md-6
+            .form-group
+              label.form-control-label Quiz Level
+              select.form-control(name='quiz_level')
+                option.option-1 Select Quiz Level
+                option.option-2 Easy
+                option.option-3 Medium
+                option.option-4 Hard
+        
+          .col-md-6
+            .form-group
+                label.form-control-label Number of Questions
+                input.form-control(type='number' name='number_of_questions' placeholder='Number of Questions')
+            .col-md-6
+                .form-group
+                    label.form-control-label Quiz Points
+                    input.form-control(type='number' name='quiz_points' placeholder='Quiz Points')
+        .row
+            .col-md-12
+                .form-group
+                button.btn.btn-primary(type='submit') Create Quiz
+
+
+
+
+    
