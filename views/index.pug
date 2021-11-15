@@ -6,7 +6,7 @@ block content
         #mainMenu.collapse.navbar-collapse.justify-content-center
           ul.navbar-nav.ml-auto.text-uppercase.f1
             li
-              a.active.active-first(href='#home') home
+              a.active.active-first(href='/') home
             li
               a(href='/new_quiz') New Quiz
             li
@@ -19,4 +19,46 @@ block content
               a(href='/logout') logout
   .container 
     h1= title
-    p Welcome to #{title}
+    p 
+  
+  .courses-container
+    .course
+      .course-preview
+        h6 Quiz Category
+        h2 Programming
+        a(href='#')
+          | View all Quizzes  
+          i.fas.fa-chevron-right
+      .course-info
+        h6 Mani Sai Prasad
+        h2 Callbacks &amp; Closures
+        h6 description
+        button.btn Take Quiz
+  
+  .courses-container
+    .course
+      .course-preview
+        h6 Quiz Category
+        h2 Programming     
+        a(href='#')
+          | View all Quizzes  
+          i.fas.fa-chevron-right
+      .course-info
+        h6 Mani Sai Prasad
+        h2 Callbacks &amp; Closures
+        h6 description
+        button.btn Take Quiz
+
+  .courses-container
+    .course
+      .course-preview
+        h6 Quiz Category
+        h2 Indian_History  
+        a(href='#')
+          | View all Quizzes  
+          i.fas.fa-chevron-right
+      .course-info
+        h6 Mani Sai Prasad
+        h2 Callbacks &amp; Closures
+        h6 description
+        button.btn Take Quiz
