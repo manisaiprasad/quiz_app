@@ -11,15 +11,18 @@ exports.up = async (knex) => {
         table.increments('id');
         table.string('quiz_name', 255).notNullable();
         table.string('quiz_desc', 255).notNullable();
-        table.string('quiz_status', 255).notNullable();
-        table.string('quiz_created_by', 255).notNullable();
-        table.string('quiz_created_date', 255).notNullable();
-        table.string('quiz_modified_by', 255).notNullable();
-        table.string('quiz_modified_date', 255).notNullable();
+        table.timestamp('created_at').defaultTo(knex.fn.now());
+        table.integer('quiz_created_by').unsigned().references('id').inTable('users');
+        table.string('quiz_level', 255).notNullable();
+        table.integer('number_of_questions', 255).notNullable();
+        table.string('quiz_category', 255).notNullable();
+        table.string('quiz_time', 255);
+        table.string('quiz_pass_score', 255).notNullable();
      })
      .createTable('quiz_questions', function (table) {
         table.increments('question_id');
         table.string('question', 255).notNullable();
+        table.string('question_type',255).notNullable();
         table.string('options', 255).notNullable();
         table.string('answer', 255).notNullable();
         table.integer('quiz_id').unsigned().references('id').inTable('quiz');
@@ -34,8 +37,8 @@ exports.up = async (knex) => {
 
 exports.down = async (knex) => {
     return knex.schema
+    .dropTable("quiz_results")
     .dropTable("users")
-    .dropTable("quiz")
     .dropTable("quiz_questions")
-    .dropTable("quiz_results");
-};
+    .dropTable("quiz");
+};   
