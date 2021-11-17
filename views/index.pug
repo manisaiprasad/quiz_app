@@ -18,47 +18,22 @@ block content
             li
               a(href='/logout') logout
   .container 
-    h1= title
+    h1 
     p 
   
-  .courses-container
-    .course
-      .course-preview
-        h6 Quiz Category
-        h2 Programming
-        a(href='#')
-          | View all Quizzes  
-          i.fas.fa-chevron-right
-      .course-info
-        h6 Mani Sai Prasad
-        h2 Callbacks &amp; Closures
-        h6 description
-        button.btn Take Quiz
-  
-  .courses-container
-    .course
-      .course-preview
-        h6 Quiz Category
-        h2 Programming     
-        a(href='#')
-          | View all Quizzes  
-          i.fas.fa-chevron-right
-      .course-info
-        h6 Mani Sai Prasad
-        h2 Callbacks &amp; Closures
-        h6 description
-        button.btn Take Quiz
-
-  .courses-container
-    .course
-      .course-preview
-        h6 Quiz Category
-        h2 Indian_History  
-        a(href='#')
-          | View all Quizzes  
-          i.fas.fa-chevron-right
-      .course-info
-        h6 Mani Sai Prasad
-        h2 Callbacks &amp; Closures
-        h6 description
-        button.btn Take Quiz
+  if (quizs.length > 0)
+    for quiz in quizs
+      .courses-container
+        .course
+          .course-preview
+            h6 Quiz Category
+            h2 #{quiz.quiz_category}
+            a(href='#')
+              | View all Quizzes  
+              i.fas.fa-chevron-right
+          .course-info
+            h6 Mani Sai Prasad
+            h2 #{quiz.quiz_name}
+            h6 #{quiz.quiz_desc}
+            button.btn Take Quiz
+    
