@@ -25,53 +25,50 @@ block content
         .row
           .col-md-6
             .form-group
-              label.form-control-label New Quiz
-              input.form-control(type='text' name='quiz_name' placeholder='Quiz Name')
+              label.form-control-label Quiz Name
+              input.form-control(type='text' required='true' name='quiz_name' placeholder='Quiz Name')
           .col-md-6
             .form-group
               label.form-control-label Quiz Description
-              textarea.form-control(name='quiz_description' placeholder='Quiz Description')
-          .col-md-6
-            .form-group
-              label.form-control-label Quiz Type
-              select.form-control(name='quiz_type')
-                option.option-1 Select Quiz Type
-                option.option-2 True or False
+              textarea.form-control(name='quiz_desc' placeholder='Quiz Description')
+          
           .col-md-6
             .form-group
               label.form-control-label Quiz Category
               select.form-control(name='quiz_category')
-                option.option-1 Select Quiz Category
-                option.option-2 General Knowledge
-                option.option-3 Science
-                option.option-4 Math
-                option.option-5 History
-                option.option-6 Geography
-                option.option-7 Programming
-                option.option-8 Sports
-                option.option-9 Other 
-
+                option.option-1 General Knowledge
+                option.option-2 Science
+                option.option-2 Math
+                option.option-4 History
+                option.option-5 Geography
+                option.option-6 Programming
+                option.option-7 Sports
+                option.option-8 Other 
+          .col-md-6
+            .form-group
+              label.form-control-label Quiz Category
+              input.form-control(type='text' name='Quiz_Category_others' placeholder='If selected others')
           .col-md-6
             .form-group
               label.form-control-label Quiz Level
               select.form-control(name='quiz_level')
-                option.option-1 Select Quiz Level
-                option.option-2 Easy
-                option.option-3 Medium
-                option.option-4 Hard
+                option.option-1 Beginner
+                option.option-2 Intermediate
+                option.option-3 Advanced
+                option.option-4 Expert
         
           .col-md-6
             .form-group
                 label.form-control-label Number of Questions
-                input.form-control(type='number' name='number_of_questions' placeholder='Number of Questions')
+                input.form-control(type='number' name='number_of_questions' value="5" required='true' placeholder='Number of Questions')
             .col-md-6
                 .form-group
-                    label.form-control-label Quiz Points
-                    input.form-control(type='number' name='quiz_points' placeholder='Quiz Points')
+                    label.form-control-label Quiz Pass Score (%)
+                    input.form-control(type='number' name='quiz_pass_score' required='true' value="50" placeholder='0-100%')
         .row
             .col-md-12
                 .form-group
-                button.btn.btn-primary(type='submit') Create Quiz
+                    button.btn.btn-primary(type='submit') Create Quiz
 
 
 
