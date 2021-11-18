@@ -16,13 +16,28 @@ function insertUser(db, newUser) {
       return rows[0];
     });
 }
-insertQuiz = (db, newQuiz) => { 
+function insertQuiz(db, newQuiz){ 
   return db
     .insert(newQuiz)
     .into("quiz")
     .then(rows => {
       return rows[0];
     });
+}
+function insertQuestion(db, newQuestion) {
+  return db
+    .insert(newQuestion)
+    .into("quiz_questions")
+    .then(rows => {
+      return rows[0];
+    });
+}
+function getUser(db, user_id) {
+  return db
+    .select("*")
+    .from("users")
+    .where("id", user_id)
+    .first();
 }
 
 /* GET home page. */
@@ -75,26 +90,35 @@ router.route('/new_quiz')
       const { quiz_name, quiz_desc, quiz_category, Quiz_Category_others, quiz_level, number_of_questions, quiz_pass_score } = req.body;
       const quiz_created_by = req.user.id;
       const quiz = await insertQuiz(db, { quiz_name, quiz_desc, quiz_category, quiz_level, number_of_questions, quiz_pass_score, quiz_created_by });
-      res.redirect('/');
+      res.redirect('/new_quiz/'+quiz_name+'/question/1');
     } catch (err) {
       console.log(err);
       res.redirect('/new_quiz');
     }
   });
 
-router.route('/new_question')
+router.route('/new_quiz/:quiz_name/question/:q_no')
   .get( checkAuthenticated, function(req, res) {
-    res.render('new_question')
+    db.select('*').from('quiz').where('quiz_name', req.params.quiz_name).first().then(quiz => {
+      console.log(quiz);
+      res.render('new_question', {quiz: quiz, q_no: req.params.q_no})
+      // res.render('new_question', {quiz_name: req.params.quiz_name, question_number: req.params.q_no, quizs: quiz});
+    })
   })
   .post( checkAuthenticated, async(req, res) =>{
     try {
-      const { question_text, question_type, question_category, question_category_others, question_level, question_answer, question_hint, question_difficulty, question_image } = req.body;
-      // const user_id = req.user.id;
-      const question = await insertQuestion(db, { question_text, question_type, question_category, question_level, question_answer, question_hint, question_difficulty, question_image });
-      res.redirect('/');
+        if (req.params.q_no < parseInt(req.body.number_of_questions)) {
+          const { question, option1, option2, option3, option4, correct_option, quiz_id } = req.body;
+          const answer = correct_option;
+          const questions = await insertQuestion(db, { question, answer, option1, option2, option3, option4, quiz_id });
+          let new_q_no = parseInt(req.params.q_no) + parseInt(1);
+          res.redirect('/new_quiz/'+req.params.quiz_name+'/question/'+new_q_no);      
+        }else{
+          res.redirect('/');
+        }
     } catch (err) {
       console.log(err);
-      res.redirect('/new_question');
+      res.redirect('/new_quiz/'+req.params.quiz_name+'/question/'+parseInt(req.params.q_no));
     }
   }
   );
