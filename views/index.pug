@@ -18,8 +18,7 @@ block content
             li
               a(href='/logout') logout
   .container 
-    h1 
-    p 
+    h1(style="text-align: center; margin-top: 40px;color: #fff;") Hello #{username}! Welcome back to Quiz App
   
   if (quizs.length > 0)
     for quiz in quizs
@@ -35,5 +34,5 @@ block content
             h6 Mani Sai Prasad
             h2 #{quiz.quiz_name}
             h6 #{quiz.quiz_desc}
-            button.btn Take Quiz
+            button.btn(style="position: absolute;bottom: 30px;right: 30px;") Take Quiz
     
