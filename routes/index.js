@@ -6,26 +6,7 @@ const passport = require('passport');
 
 const intializePassport = require('../configs/passport-config');
 
-intializePassport(passport, email => {
-    getUserByEmail(db,email).then(rows => {
-      return rows[0];
-    });
-  }, userid => {
-    return getUserById(db, userid);
-  });
-
-function getUserById(db, id) {
-  db("users")
-    .where('id', id ).then(rows => {
-      return rows[0];
-    }
-  );
-}
-
-function getUserByEmail(db, user_email) {
-  return db("users")
-    .where('email',user_email).then(rows => rows[0]);
-}
+intializePassport(passport);
 
 function insertUser(db, newUser) {
   return db
@@ -35,18 +16,28 @@ function insertUser(db, newUser) {
       return rows[0];
     });
 }
+insertQuiz = (db, newQuiz) => { 
+  return db
+    .insert(newQuiz)
+    .into("quiz")
+    .then(rows => {
+      return rows[0];
+    });
+}
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: req.user.full_name });
+router.get('/', checkAuthenticated,  function(req, res, next) {
+  db.select('*').from('quiz').then(quiz => {
+    res.render('index', { title: 'Quiz', quizs: quiz, username: req.user.user_name});
+  })
 });
 
 /* signup page. */
 router.route('/signup')
-  .get(function(req, res) {
+  .get( checkNotAuthenticated, function(req, res) {
     res.render('signup')
   })
-  .post(async(req, res) =>{
+  .post( checkNotAuthenticated, async(req, res) =>{
     try {
       const { email, password, full_name, user_name } = req.body;
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -60,20 +51,66 @@ router.route('/signup')
 
 /* login page. */
 router.route('/login')
-  .get(function(req, res) {
-    console.log(getUserByEmail(db, 'manisaiprasadam@gmail.com').then(rows => {
-      return rows[0];
-    }));
+  .get( checkNotAuthenticated,async function(req, res) {
     res.render('login')
   })
-  .post(passport.authenticate('local', {
+  .post( checkNotAuthenticated, passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true
     }));
 
 router.get('/logout', function(req, res) {
-  
+  req.logOut()
+  res.redirect('/login')
 });
+
+/* new Quiz page. */
+router.route('/new_quiz')
+  .get( checkAuthenticated, function(req, res) {
+    res.render('new_quiz')
+  })
+  .post( checkAuthenticated, async(req, res) =>{
+    try {
+      const { quiz_name, quiz_desc, quiz_category, Quiz_Category_others, quiz_level, number_of_questions, quiz_pass_score } = req.body;
+      // const user_id = req.user.id;
+      const quiz = await insertQuiz(db, { quiz_name, quiz_desc, quiz_category, quiz_level, number_of_questions, quiz_pass_score });
+      res.redirect('/');
+    } catch (err) {
+      console.log(err);
+      res.redirect('/new_quiz');
+    }
+  });
+
+router.route('/new_question')
+  .get( checkAuthenticated, function(req, res) {
+    res.render('new_question')
+  })
+  .post( checkAuthenticated, async(req, res) =>{
+    try {
+      const { question_text, question_type, question_category, question_category_others, question_level, question_answer, question_hint, question_difficulty, question_image } = req.body;
+      // const user_id = req.user.id;
+      const question = await insertQuestion(db, { question_text, question_type, question_category, question_level, question_answer, question_hint, question_difficulty, question_image });
+      res.redirect('/');
+    } catch (err) {
+      console.log(err);
+      res.redirect('/new_question');
+    }
+  }
+  );
+  
+  function checkAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+      return next()
+    }
+    res.redirect('/login')
+  }
+  
+  function checkNotAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+      return res.redirect('/')
+    }
+    next()
+  }
 
 module.exports = router;
