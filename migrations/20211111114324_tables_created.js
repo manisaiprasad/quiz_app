@@ -22,8 +22,11 @@ exports.up = async (knex) => {
      .createTable('quiz_questions', function (table) {
         table.increments('question_id');
         table.string('question', 255).notNullable();
-        table.string('question_type',255).notNullable();
-        table.string('options', 255).notNullable();
+        table.string('question_type',255);
+        table.string('option1', 255).notNullable();
+        table.string('option2', 255).notNullable();
+        table.string('option3', 255);
+        table.string('option4', 255);
         table.string('answer', 255).notNullable();
         table.integer('quiz_id').unsigned().references('id').inTable('quiz');
      })
@@ -38,7 +41,7 @@ exports.up = async (knex) => {
 exports.down = async (knex) => {
     return knex.schema
     .dropTable("quiz_results")
-    .dropTable("users")
     .dropTable("quiz_questions")
-    .dropTable("quiz");
+    .dropTable("quiz")
+    .dropTable("users");
 };   
