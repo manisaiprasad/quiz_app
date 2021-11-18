@@ -19,13 +19,13 @@ block content
               a(href='/logout') logout
   
   .section.new-quiz-section
-    h1(style="text-align:center") Quiz Question
+    h1(style="text-align:center") #{quiz.quiz_name} Quiz (#{q_no}/#{quiz.number_of_questions})
     .container
       .row(style = "width: 600px;color:black")
         .col-md-12
           .card
             .card-body
-              form(action='/create_quiz_questions' method='post')
+              form(action='/new_quiz/'+quiz.quiz_name+'/question/'+q_no method='post')
                 .form-group
                   label(for='question') Question
                   input.form-control(type='text' name='question' id='question' placeholder='Enter Question')
@@ -41,6 +41,8 @@ block content
                 .form-group
                   label(for='option4') Option 4
                   input.form-control(type='text' name='option4' id='option4' placeholder='Enter Option 4')
+                  input(type="hidden" name="quiz_id" value=quiz.id)
+                  input(type="hidden" name="number_of_questions" value=quiz.number_of_questions)
                 .form-group
                   label(for='correct_option') Correct Option
                   select.form-control(name='correct_option' id='correct_option')
