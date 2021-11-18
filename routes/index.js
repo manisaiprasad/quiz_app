@@ -73,8 +73,8 @@ router.route('/new_quiz')
   .post( checkAuthenticated, async(req, res) =>{
     try {
       const { quiz_name, quiz_desc, quiz_category, Quiz_Category_others, quiz_level, number_of_questions, quiz_pass_score } = req.body;
-      // const user_id = req.user.id;
-      const quiz = await insertQuiz(db, { quiz_name, quiz_desc, quiz_category, quiz_level, number_of_questions, quiz_pass_score });
+      const quiz_created_by = req.user.id;
+      const quiz = await insertQuiz(db, { quiz_name, quiz_desc, quiz_category, quiz_level, number_of_questions, quiz_pass_score, quiz_created_by });
       res.redirect('/');
     } catch (err) {
       console.log(err);
