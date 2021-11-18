@@ -34,5 +34,6 @@ block content
             h6 Mani Sai Prasad
             h2 #{quiz.quiz_name}
             h6 #{quiz.quiz_desc}
-            button.btn(style="position: absolute;bottom: 30px;right: 30px;") Take Quiz
+            form(action="/quiz/"+quiz.id+"/play" method="GET") 
+              button.btn(style="position: absolute;bottom: 30px;right: 30px;") Take Quiz
     
