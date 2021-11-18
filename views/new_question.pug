@@ -1,0 +1,54 @@
+extends layout
+block content
+  header.main-header
+    .container
+      nav.navbar.navbar-expand-lg.main-nav.px-0
+        #mainMenu.collapse.navbar-collapse.justify-content-center
+          ul.navbar-nav.ml-auto.text-uppercase.f1
+            li
+              a(href='/') home
+            li
+              a.active.active-first(href='/new_quiz') New Quiz
+            li
+              a(href='/search') search
+            li
+              a(href='/your_quiz') your quizs
+            li
+              a(href='/profile') Profile
+            li
+              a(href='/logout') logout
+  
+  .section.new-quiz-section
+    h1(style="text-align:center") Quiz Question
+    .container
+      .row(style = "width: 600px;color:black")
+        .col-md-12
+          .card
+            .card-body
+              form(action='/create_quiz_questions' method='post')
+                .form-group
+                  label(for='question') Question
+                  input.form-control(type='text' name='question' id='question' placeholder='Enter Question')
+                .form-group
+                  label(for='option1') Option 1
+                  input.form-control(type='text' name='option1' id='option1' placeholder='Enter Option 1')
+                .form-group
+                  label(for='option2') Option 2
+                  input.form-control(type='text' name='option2' id='option2' placeholder='Enter Option 2')
+                .form-group
+                  label(for='option3') Option 3
+                  input.form-control(type='text' name='option3' id='option3' placeholder='Enter Option 3')
+                .form-group
+                  label(for='option4') Option 4
+                  input.form-control(type='text' name='option4' id='option4' placeholder='Enter Option 4')
+                .form-group
+                  label(for='correct_option') Correct Option
+                  select.form-control(name='correct_option' id='correct_option')
+                    option(value='1') Option 1
+                    option(value='2') Option 2
+                    option(value='3') Option 3
+                    option(value='4') Option 4
+                .form-group.text-center
+                  button.btn.btn-primary(type='submit') Create Question
+
+                
