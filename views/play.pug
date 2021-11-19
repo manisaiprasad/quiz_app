@@ -17,4 +17,29 @@ block content
               a(href='/profile') Profile
             li
               a(href='/logout') logout
-    
+
+  .card(style="min-width: 30rem;")
+    .card-body
+      h3.card-title #{quiz[1].quiz_name} Quiz 
+      p Quiz Category: #{quiz[1].quiz_category}
+      hr
+      h5.card-text #{quiz[1].question}
+      .form-check
+        input#flexRadioDefault1.form-check-input(type='radio' name='flexRadioDefault')
+        label.form-check-label(style="padding-top: 0px;" for='flexRadioDefault1')
+          | #{quiz[1].option1}
+
+      .form-check
+        input#flexRadioDefault2.form-check-input(type='radio' name='flexRadioDefault')
+        label.form-check-label(style="padding-top: 0px;" for='flexRadioDefault2')
+          | #{quiz[1].option2}
+      .form-check
+        input#flexRadioDefault3.form-check-input(type='radio' name='flexRadioDefault')
+        label.form-check-label(style="padding-top: 0px;" for='flexRadioDefault3')
+          | #{quiz[1].option3}
+      .form-check
+        input#flexRadioDefault4.form-check-input(type='radio' name='flexRadioDefault')
+        label.form-check-label(style="padding-top: 0px;" for='flexRadioDefault4')
+          | #{quiz[1].option4}
+
+      a.btn.btn-primary(href='#') Next Question
