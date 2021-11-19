@@ -120,8 +120,34 @@ router.route('/new_quiz/:quiz_name/question/:q_no')
       console.log(err);
       res.redirect('/new_quiz/'+req.params.quiz_name+'/question/'+parseInt(req.params.q_no));
     }
-  }
-  );
+  });
+
+  // /quiz/"+quiz.id+"/play
+router.route('/quiz/:id/play')
+  .get( checkAuthenticated, function(req, res) {
+    db('quiz').join('quiz_questions','quiz.id','=','quiz_questions.quiz_id').select('*').where('id', req.params.id).then(quiz => {
+      console.log(quiz);
+      res.render('play', {quiz: quiz})
+    })
+  })
+  
+
+router.route('/your_quiz')
+  .get( checkAuthenticated, function(req, res) {
+    res.render('your_quiz',{username: req.user.user_name})
+  })
+  
+
+router.route('/profile')
+  .get( checkAuthenticated, function(req, res) {
+    res.render('profile',{username: req.user.user_name})
+  })
+  
+
+router.route('/search')
+  .get( checkAuthenticated, function(req, res) {
+    res.render('search',{username: req.user.user_name})
+  })
   
   function checkAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
