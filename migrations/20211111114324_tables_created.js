@@ -20,7 +20,7 @@ exports.up = async (knex) => {
         table.string('pass_score', 255).notNullable();
      })
      .createTable('quiz_questions', function (table) {
-        table.increments('id');
+        table.increments('question_id');
         table.string('question', 255).notNullable();
         table.string('type',255);
         table.string('option1', 255).notNullable();
@@ -44,4 +44,4 @@ exports.down = async (knex) => {
     .dropTable("quiz_questions")
     .dropTable("quiz")
     .dropTable("users");
-};   
+};
