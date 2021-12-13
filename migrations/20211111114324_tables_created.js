@@ -8,7 +8,7 @@ exports.up = async (knex) => {
        table.string('password', 25).notNullable();
     })
     .createTable('quiz', function (table) {
-        table.increments('quiz_id');
+        table.increments('id');
         table.string('name', 25).notNullable();
         table.string('desc', 100).notNullable();
         table.timestamp('created_at').defaultTo(knex.fn.now());
@@ -34,11 +34,18 @@ exports.up = async (knex) => {
         table.string('result', 255).notNullable();
         table.integer('user_id').unsigned().references('id').inTable('users');
         table.integer('quiz_id').unsigned().references('id').inTable('quiz');
-     });
+     })
+     .createTable('quiz_answers', function (table) {
+         table.increments('id');
+         table.string('answer', 255).notNullable();
+         table.integer('question_id').unsigned().references('question_id').inTable('quiz_questions');
+         table.integer('quiz_result_id').unsigned().references('id').inTable('quiz_results');
+       });
 };
 
 exports.down = async (knex) => {
     return knex.schema
+    .dropTable('quiz_answers')
     .dropTable("quiz_results")
     .dropTable("quiz_questions")
     .dropTable("quiz")
