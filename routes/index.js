@@ -87,9 +87,9 @@ router.route('/new_quiz')
   })
   .post( checkAuthenticated, async(req, res) =>{
     try {
-      const { quiz_name, quiz_desc, quiz_category, Quiz_Category_others, quiz_level, number_of_questions, quiz_pass_score } = req.body;
-      const quiz_created_by = req.user.id;
-      const quiz = await insertQuiz(db, { quiz_name, quiz_desc, quiz_category, quiz_level, number_of_questions, quiz_pass_score, quiz_created_by });
+      const { name, desc, category, Quiz_Category_others, level, number_of_questions, pass_score } = req.body;
+      const created_by = req.user.id;
+      const quiz = await insertQuiz(db, { name, desc, category, level, number_of_questions, pass_score, created_by });
       res.redirect('/new_quiz/'+quiz_name+'/question/1');
     } catch (err) {
       console.log(err);
@@ -123,15 +123,32 @@ router.route('/new_quiz/:quiz_name/question/:q_no')
   });
 
   // /quiz/"+quiz.id+"/play
-router.route('/quiz/:id/play')
+router.route('/quiz/:id/play/:q_no')
   .get( checkAuthenticated, function(req, res) {
-    db('quiz').join('quiz_questions','quiz.id','=','quiz_questions.quiz_id').select('*').where('id', req.params.id).then(quiz => {
+    const page = req.params.q_no;
+    db('quiz').join('quiz_questions','quiz.id','=','quiz_questions.quiz_id').select('*').where('id', req.params.id).paginate({
+      perPage: 1,
+      currentPage: page
+    }).then(quiz => {
       console.log(quiz);
       res.render('play', {quiz: quiz})
     })
   })
-  
-
+  .post( checkAuthenticated, async(req, res) =>{
+    try {
+      if (req.params.q_no < parseInt(req.body.number_of_questions)) {
+        console.log(req.body);
+        const { quiz_id, question_id, answer } = req.body;
+        res.redirect('/quiz/'+quiz_id+'/play/'+(parseInt(req.params.q_no)+parseInt(1)));      
+      }
+      else{
+        res.redirect('/');
+      }
+    } catch (err) {
+      console.log(err);
+      res.redirect('/quiz/'+quiz_id+'/play/1');
+    }
+  });
 router.route('/your_quiz')
   .get( checkAuthenticated, function(req, res) {
     res.render('your_quiz',{username: req.user.user_name})
