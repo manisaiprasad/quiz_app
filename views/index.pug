@@ -26,14 +26,14 @@ block content
         .course
           .course-preview
             h6 Quiz Category
-            h2 #{quiz.quiz_category}
+            h2 #{quiz.category}
             a(href='#')
               | View all Quizzes  
               i.fas.fa-chevron-right
           .course-info
             h6 Mani Sai Prasad
-            h2 #{quiz.quiz_name}
-            h6 #{quiz.quiz_desc}
-            form(action="/quiz/"+quiz.id+"/play" method="GET") 
+            h2 #{quiz.name}
+            h6 #{quiz.desc}
+            form(action="/quiz/"+quiz.id+"/play/1" method="GET") 
               button.btn(style="position: absolute;bottom: 30px;right: 30px;") Take Quiz
     
