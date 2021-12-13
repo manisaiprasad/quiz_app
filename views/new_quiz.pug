@@ -30,12 +30,12 @@ block content
           .col-md-6
             .form-group
               label.form-control-label Quiz Description
-              textarea.form-control(name='quiz_desc' placeholder='Quiz Description')
+              textarea.form-control(name='desc' placeholder='Quiz Description')
           
           .col-md-6
             .form-group
               label.form-control-label Quiz Category
-              select.form-control(name='quiz_category')
+              select.form-control(name='category')
                 option.option-1 General Knowledge
                 option.option-2 Science
                 option.option-2 Math
@@ -51,7 +51,7 @@ block content
           .col-md-6
             .form-group
               label.form-control-label Quiz Level
-              select.form-control(name='quiz_level')
+              select.form-control(name='level')
                 option.option-1 Beginner
                 option.option-2 Intermediate
                 option.option-3 Advanced
@@ -64,7 +64,7 @@ block content
             .col-md-6
                 .form-group
                     label.form-control-label Quiz Pass Score (%)
-                    input.form-control(type='number' name='quiz_pass_score' required='true' value="50" placeholder='0-100%')
+                    input.form-control(type='number' name='pass_score' required='true' value="50" placeholder='0-100%')
         .row
             .col-md-12
                 .form-group.text-center

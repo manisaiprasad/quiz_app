@@ -21,7 +21,7 @@ block content
   .card(style="min-width: 30rem;")
     .card-body
       h3.card-title #{quiz.data[0].quiz_name} Quiz (#{quiz.pagination.currentPage} / #{quiz.data[0].number_of_questions} )
-      p Quiz Category: #{quiz.data[0].quiz_category}
+      p Quiz Category: #{quiz.data[0].category}
       hr
       h5.card-text #{quiz.data[0].question}
       .form 
