@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 
 const intializePassport = require('../configs/passport-config');
+const { session } = require('passport');
 
 intializePassport(passport);
 
@@ -107,11 +108,15 @@ router.route('/new_quiz/:quiz_name/question/:q_no')
   })
   .post( checkAuthenticated, async(req, res) =>{
     try {
-        if (req.params.q_no < parseInt(req.body.number_of_questions)) {
+        if (req.params.q_no <= parseInt(req.body.number_of_questions)) {
           const { question, option1, option2, option3, option4, correct_option, quiz_id } = req.body;
           const answer = correct_option;
           const questions = await insertQuestion(db, { question, answer, option1, option2, option3, option4, quiz_id });
           let new_q_no = parseInt(req.params.q_no) + parseInt(1);
+          if (new_q_no == parseInt(req.body.number_of_questions)) {
+            res.redirect('/');
+          }
+
           res.redirect('/new_quiz/'+req.params.quiz_name+'/question/'+new_q_no);      
         }else{
           res.redirect('/');
@@ -121,6 +126,15 @@ router.route('/new_quiz/:quiz_name/question/:q_no')
       res.redirect('/new_quiz/'+req.params.quiz_name+'/question/'+parseInt(req.params.q_no));
     }
   });
+  
+function getQuestions(db, quiz_id, callback) {
+  db.select('*')
+    .from('quiz_questions')
+    .where('quiz_id', quiz_id).then(questions => {
+      callback(questions);
+    }
+  );
+}
 
   // /quiz/"+quiz.id+"/play
 router.route('/quiz/:id/play/:q_no')
@@ -136,9 +150,62 @@ router.route('/quiz/:id/play/:q_no')
   })
   .post( checkAuthenticated, async(req, res) =>{
     try {
-      if (req.params.q_no < parseInt(req.body.number_of_questions)) {
+      if (req.params.q_no <= parseInt(req.body.number_of_questions)) {
         console.log(req.body);
         const { quiz_id, question_id, answer } = req.body;
+        if (req.params.q_no == 1) {
+          session.user_answers = [];
+        }
+        session.user_answers.push({question_id, answer});
+        console.log(session.user_answers);
+
+        if(req.params.q_no == parseInt(req.body.number_of_questions)){
+          // Calculate score
+          let quiz_questions = await getQuestions(db, quiz_id, function(questions){
+            console.log(questions);
+            console.log('session.user_answers');
+            console.log(session.user_answers);
+            var score = 0;
+            for (let i = 0; i < questions.length; i++) {
+              for (let j = 0; j < session.user_answers.length; j++) {
+                if (questions[i].question_id == session.user_answers[j].question_id) {
+                  console.log("match");
+                  console.log(questions[i].answer);
+                  console.log(session.user_answers[j].answer);
+                  if (questions[i].answer == session.user_answers[j].answer) {
+                    score = score + 1;
+                    console.log("score: "+score);
+                    break;
+                  }
+                }
+              }
+            }
+            console.log("score"+score);
+            db.insert({result:score, user_id: req.user.id, quiz_id}).into('quiz_results').then(result => {
+              console.log(result[0]);
+
+              res.redirect('/');
+            });
+
+          });
+            // Store score
+            // db.insert({
+            //   user_id: req.user.id,
+            //   quiz_id: quiz_id,
+            //   result:  score
+            // }).into('quiz_results').then(rows => {
+            //   session.result_id = rows[0];
+            //   console.log(rows);
+            // })
+
+          // console.log(session.result_id);
+          // Store user answers
+          // db.insert(session.user_answers).into('quiz_answers').then(rows => {
+          //   console.log(rows);
+          // })
+
+          return res.redirect('/quiz/'+req.params.id+'/result');
+        }
         res.redirect('/quiz/'+quiz_id+'/play/'+(parseInt(req.params.q_no)+parseInt(1)));      
       }
       else{
@@ -146,7 +213,7 @@ router.route('/quiz/:id/play/:q_no')
       }
     } catch (err) {
       console.log(err);
-      res.redirect('/quiz/'+quiz_id+'/play/1');
+      res.render('error', {error: err});
     }
   });
 router.route('/your_quiz')
