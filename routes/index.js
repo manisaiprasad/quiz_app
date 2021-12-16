@@ -112,11 +112,12 @@ router.route('/new_quiz/:quiz_name/question/:q_no')
           const { question, option1, option2, option3, option4, correct_option, quiz_id } = req.body;
           const answer = correct_option;
           const questions = await insertQuestion(db, { question, answer, option1, option2, option3, option4, quiz_id });
-          let new_q_no = parseInt(req.params.q_no) + parseInt(1);
-          if (new_q_no == parseInt(req.body.number_of_questions)) {
+          
+          if (req.params.q_no == parseInt(req.body.number_of_questions)) {
             res.redirect('/');
           }
 
+          let new_q_no = parseInt(req.params.q_no) + parseInt(1);
           res.redirect('/new_quiz/'+req.params.quiz_name+'/question/'+new_q_no);      
         }else{
           res.redirect('/');
@@ -181,30 +182,20 @@ router.route('/quiz/:id/play/:q_no')
               }
             }
             console.log("score"+score);
+            // Save score
             db.insert({result:score, user_id: req.user.id, quiz_id}).into('quiz_results').then(result => {
-              console.log(result[0]);
-
-              res.redirect('/');
-            });
-
+              quiz_result_id = result[0];
+              console.log(quiz_result_id);
+              // Save answers
+              for (let i = 0; i < session.user_answers.length; i++) {
+                db.insert({quiz_result_id, question_id: session.user_answers[i].question_id, answer: session.user_answers[i].answer}).into('quiz_answers').then(answers => {
+                  console.log(answers);
+                })
+              }
+              return res.redirect('/quiz/'+quiz_id+'/result/'+quiz_result_id);
+            })
           });
-            // Store score
-            // db.insert({
-            //   user_id: req.user.id,
-            //   quiz_id: quiz_id,
-            //   result:  score
-            // }).into('quiz_results').then(rows => {
-            //   session.result_id = rows[0];
-            //   console.log(rows);
-            // })
-
-          // console.log(session.result_id);
-          // Store user answers
-          // db.insert(session.user_answers).into('quiz_answers').then(rows => {
-          //   console.log(rows);
-          // })
-
-          return res.redirect('/quiz/'+req.params.id+'/result');
+           
         }
         res.redirect('/quiz/'+quiz_id+'/play/'+(parseInt(req.params.q_no)+parseInt(1)));      
       }
