@@ -1,0 +1,73 @@
+extends layout
+block content
+    header.main-header
+        .container
+            nav.navbar.navbar-expand-lg.main-nav.px-0
+                #mainMenu.collapse.navbar-collapse.justify-content-center
+                    ul.navbar-nav.ml-auto.text-uppercase.f1
+                        li
+                            a(href='/') home
+                        li
+                            a(href='/new_quiz') New Quiz
+                        li
+                            a(href='/search') search
+                        li
+                            a.active.active-first(href='/your_quiz') your quizs
+                        li
+                            a(href='/profile') Profile
+                        li
+                            a(href='/logout') logout
+    .container 
+        .container.mt-5
+            .row.d-flex.justify-content-center
+                .col-md-8
+                    .headings
+                        h2(style="color:#fff;")  #{quizs[0].quiz_name}
+                        h6(style="color:#fff;") #{quizs[0].desc}
+                        small(style="color:#fff;") Quiz Category: #{quizs[0].category}  
+                        h6(style="color:#fff;") Score: #{quizs[0].result}/#{quizs[0].number_of_questions}
+                    if (quizs.length > 0)
+                        for quiz in quizs
+                            .card.p-3.mt-4
+                                h4 #{quiz.question}
+
+                                if (quiz.user_answer==1 && quiz.answer == quiz.user_answer)
+                                    .alert.alert-success.text-center.mt-2 #{quiz.option1}
+                                else if (quiz.answer==1)
+                                    .alert.alert-success.text-center.mt-2 #{quiz.option1}
+                                else if (quiz.user_answer==1 && quiz.answer != quiz.user_answer)
+                                    .alert.alert-danger.text-center.mt-2 #{quiz.option1}
+                                else 
+                                    .alert.alert-secondary.text-center.mt-2 #{quiz.option1}
+
+                                if (quiz.user_answer==2 && quiz.answer == quiz.user_answer)
+                                    .alert.alert-success.text-center.mt-2 #{quiz.option2}
+                                else if (quiz.answer==2)
+                                    .alert.alert-success.text-center.mt-2 #{quiz.option2}
+                                
+                                else if (quiz.user_answer==2 && quiz.answer != quiz.user_answer)
+                                    .alert.alert-danger.text-center.mt-2 #{quiz.option2}
+                                else 
+                                    .alert.alert-secondary.text-center.mt-2 #{quiz.option2}
+                                
+                                if (quiz.user_answer==3 && quiz.answer == quiz.user_answer)
+                                    .alert.alert-success.text-center.mt-2 #{quiz.option3}
+                                else if (quiz.answer==3)
+                                    .alert.alert-success.text-center.mt-2 #{quiz.option3}
+                                else if (quiz.user_answer==3 && quiz.answer != quiz.user_answer)
+                                    .alert.alert-danger.text-center.mt-2 #{quiz.option3}
+                                else 
+                                    .alert.alert-secondary.text-center.mt-2 #{quiz.option3}
+                                
+                                if (quiz.user_answer==4 && quiz.answer == 4)
+                                    .alert.alert-success.text-center.mt-2 #{quiz.option4}
+                                else if (quiz.answer==4)
+                                    .alert.alert-success.text-center.mt-2 #{quiz.option4}
+                                else if (quiz.user_answer==4 && quiz.answer != quiz.user_answer)
+                                    .alert.alert-danger.text-center.mt-2 #{quiz.option4}
+                                else 
+                                    .alert.alert-secondary.text-center.mt-2 #{quiz.option4}
+
+                        
+
+
