@@ -324,6 +324,10 @@ body {
   position: relative;
 
 }
+label {
+  padding-top: 20px;
+  padding-bottom: 5px;
+}
 .dots { 
   margin-left: 15px;
 }
@@ -335,11 +339,11 @@ body {
   margin-left: 12px
 }
 
-.reply small {
+.reply a {
   color: #b7b4b4
 }
 
-.reply small:hover {
+.reply a:hover {
   color: green;
   cursor: pointer
 }
