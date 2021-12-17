@@ -209,7 +209,10 @@ router.route('/quiz/:id/play/:q_no')
   });
 router.route('/your_quiz')
   .get( checkAuthenticated, function(req, res) {
-    res.render('your_quiz',{username: req.user.user_name})
+    db('quiz').join('quiz_results','quiz.id','=','quiz_results.quiz_id').select('*').where('user_id', req.user.id).then(quiz => {
+      console.log(quiz);
+      res.render('your_quiz', {quizs: quiz})
+    })
   })
   
 
