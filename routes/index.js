@@ -192,7 +192,7 @@ router.route('/quiz/:id/play/:q_no')
                   console.log(answers);
                 })
               }
-              return res.redirect('/quiz/'+quiz_id+'/result/'+quiz_result_id);
+              return res.redirect('/your_quiz');
             })
           });
            
