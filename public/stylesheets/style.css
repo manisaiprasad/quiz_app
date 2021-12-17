@@ -324,7 +324,22 @@ body {
   position: relative;
 
 }
-label {
-  padding-top: 20px;
-  padding-bottom: 5px;
+.dots { 
+  margin-left: 15px;
+}
+.icons i {
+  margin-left: 8px
+}
+
+.reply {
+  margin-left: 12px
+}
+
+.reply small {
+  color: #b7b4b4
+}
+
+.reply small:hover {
+  color: green;
+  cursor: pointer
 }
