@@ -18,4 +18,30 @@ block content
             li
               a(href='/logout') logout
   .container 
-    h1(style="text-align: center; margin-top: 40px;color: #fff;") Hello #{username}! <br><br>  We are working on showing your quizes
+    .container.mt-5
+      .row.d-flex.justify-content-center
+        .col-md-8
+          .headings.d-flex.justify-content-between.align-items-center.mb-3
+            h5(style="color:#fff;") Quizs you have Taken 
+          if (quizs.length > 0)
+            for quiz in quizs
+              .card.p-3.mt-2
+                .d-flex.justify-content-between.align-items-center
+                  .user.d-flex.flex-row.align-items-center
+                    span
+                      h4 #{quiz.quiz_name}
+                      h6 #{quiz.desc}
+                      small Quiz Category: #{quiz.category}    
+                      br                  
+                      small Score: #{quiz.result}/#{quiz.number_of_questions}
+                  small 2 days ago
+                .action.d-flex.justify-content-between.mt-2.align-items-center
+                  .reply.px-4
+                    small View Answers
+                    span.dots
+                    small View Leaderboard
+                    span.dots
+                    small Share
+                  .icons.align-items-center
+                    i.fa.fa-star.text-warning
+                    i.fa.fa-check-circle-o.check-icon.text-success
