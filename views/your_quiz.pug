@@ -37,11 +37,11 @@ block content
                   small 2 days ago
                 .action.d-flex.justify-content-between.mt-2.align-items-center
                   .reply.px-4
-                    small View Answers
+                    a(href="/your_quiz/"+quiz.id)  View Answers
                     span.dots
-                    small View Leaderboard
+                    a(href="/your_quiz/"+quiz_id)  View Leaderboard
                     span.dots
-                    small Retake
+                    a(href="/quiz/"+quiz_id+"/play/1")  Retake
                   .icons.align-items-center
                     i.fa.fa-star.text-warning
                     i.fa.fa-check-circle-o.check-icon.text-success
