@@ -185,10 +185,10 @@ router.route('/quiz/:id/play/:q_no')
             // Save score
             db.insert({result:score, user_id: req.user.id, quiz_id}).into('quiz_results').then(result => {
               quiz_result_id = result[0];
-              console.log(quiz_result_id);
+              console.log("quiz result id: "+ quiz_result_id);
               // Save answers
               for (let i = 0; i < session.user_answers.length; i++) {
-                db.insert({quiz_result_id, question_id: session.user_answers[i].question_id, answer: session.user_answers[i].answer}).into('quiz_answers').then(answers => {
+                db.insert({quiz_result_id, question_id: session.user_answers[i].question_id, user_answer: session.user_answers[i].answer}).into('quiz_answers').then(answers => {
                   console.log(answers);
                 })
               }
@@ -196,8 +196,9 @@ router.route('/quiz/:id/play/:q_no')
             })
           });
            
+        }else{
+          res.redirect('/quiz/'+quiz_id+'/play/'+(parseInt(req.params.q_no)+parseInt(1)));      
         }
-        res.redirect('/quiz/'+quiz_id+'/play/'+(parseInt(req.params.q_no)+parseInt(1)));      
       }
       else{
         res.redirect('/');
@@ -214,7 +215,15 @@ router.route('/your_quiz')
       res.render('your_quiz', {quizs: quiz})
     })
   })
-  
+
+router.route('/your_quiz/:id')
+  .get( checkAuthenticated, function(req, res) {
+    db('quiz_answers').distinct().join('quiz_questions','quiz_answers.question_id','=','quiz_questions.question_id').join('quiz_results','quiz_answers.quiz_result_id','=','quiz_results.id').join('quiz','quiz_questions.quiz_id','=','quiz.id').select('*').where('quiz_result_id', req.params.id).then(quiz => {
+      console.log(quiz);
+      res.render('your_quiz_answers', {quizs: quiz})
+    })
+  })
+
 
 router.route('/profile')
   .get( checkAuthenticated, function(req, res) {
