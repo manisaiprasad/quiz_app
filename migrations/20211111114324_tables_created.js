@@ -37,7 +37,7 @@ exports.up = async (knex) => {
      })
      .createTable('quiz_answers', function (table) {
          table.increments('id');
-         table.string('answer', 255).notNullable();
+         table.string('user_answer', 255).notNullable();
          table.integer('question_id').unsigned().references('question_id').inTable('quiz_questions');
          table.integer('quiz_result_id').unsigned().references('id').inTable('quiz_results');
        });
