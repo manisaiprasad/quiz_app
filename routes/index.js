@@ -224,6 +224,14 @@ router.route('/your_quiz/:id')
     })
   })
 
+router.route('/leaderboard/:quiz_id')
+  .get( checkAuthenticated, function(req, res) {
+    db('quiz_results').join('users','quiz_results.user_id','=','users.id').select('*').where('quiz_id', req.params.quiz_id).orderBy('result', 'desc').then(quiz => {
+      console.log(quiz);
+      res.render('leaderboard', {quizs: quiz})
+    })
+  })
+  
 
 router.route('/profile')
   .get( checkAuthenticated, function(req, res) {
