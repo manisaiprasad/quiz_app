@@ -1,5 +1,5 @@
 // Update with your config settings.
-
+require('dotenv').config();// for migration
 module.exports = {
   development: {
     client: process.env.DB_CLIENT,
