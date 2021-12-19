@@ -224,9 +224,20 @@ router.route('/your_quiz/:id')
     })
   })
 
+router.route('/your_quiz/delete/:id')
+  .get( checkAuthenticated, function(req, res) {
+    db('quiz_answers').where('quiz_result_id', req.params.id).del().then(quiz => {
+      db('quiz_results').where('id', req.params.id).del().then(quiz => {
+        console.log(quiz);
+        res.redirect('/your_quiz');
+      })
+    })
+    
+  })
+
 router.route('/leaderboard/:quiz_id')
   .get( checkAuthenticated, function(req, res) {
-    db('quiz_results').join('users','quiz_results.user_id','=','users.id').select('*').where('quiz_id', req.params.quiz_id).orderBy('result', 'desc').then(quiz => {
+    db('quiz_results').join('users','quiz_results.user_id','=','users.id').join('quiz','quiz_results.quiz_id','=','quiz.id').select('*').where('quiz_id', req.params.quiz_id).orderBy('result','desc').then(quiz => {
       console.log(quiz);
       res.render('leaderboard', {quizs: quiz})
     })
