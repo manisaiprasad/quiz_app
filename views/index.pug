@@ -27,11 +27,10 @@ block content
           .course-preview
             h6 Quiz Category
             h2 #{quiz.category}
-            a(href='#')
-              | View all Quizzes  
+            a(href='/leaderboard/' + quiz.id)
+              | View Leaderboard  
               i.fas.fa-chevron-right
           .course-info
-            h6 Mani Sai Prasad
             h2 #{quiz.quiz_name}
             h6 #{quiz.desc}
             form(action="/quiz/"+quiz.id+"/play/1" method="GET") 
