@@ -9,8 +9,8 @@ block content
               a.active.active-first(href='/') home
             li
               a(href='/new_quiz') New Quiz
-            li
-              a(href='/search') search
+            //- li
+            //-   a(href='/search') search
             li
               a(href='/your_quiz') your quizs
             li
@@ -18,3 +18,46 @@ block content
             li
               a(href='/logout') logout
   .container 
+    .container.mt-5
+      .row.justify-content-center
+        .col-md-6
+          .activity
+            div
+              h2(style="color:#fff") Leader Board 
+              br
+              h3(style="color:#fff") #{quizs[0].quiz_name} Quiz
+              span.activity-done Description: #{quizs[0].desc}
+              br
+              span.activity-done Category: #{quizs[0].category}
+              br
+              span.activity-done Level: #{quizs[0].level}
+              br
+              span.activity-done Total Questions: #{quizs[0].number_of_questions}
+            div
+          
+          -for (var i = 0; i < quizs.length; i++)
+            .mt-3
+              ul.list.list-inline
+                li.d-flex.justify-content-between
+                  .d-flex.flex-row.align-items-center
+                      .d-flex.flex-column.mr-2
+                        h6 Rank #{i+1}    
+
+                  .d-flex.flex-row.align-items-center
+                    i.fa.fa-check-circle.checkicon
+                    .ml-2
+                      h6.mb-0 #{quizs[i].full_name}
+                      .d-flex.flex-row.mt-1.text-black-50.date-time
+                        div
+                          i.fa.fa-calendar-o
+                          span.ml-2 @#{quizs[i].user_name}
+                        
+                  .d-flex.flex-row.align-items-center
+                    .d-flex.flex-column.mr-2
+                      .profile-image
+                        
+                      span.date-time Score: #{quizs[i].result}/#{quizs[i].number_of_questions}
+                    i.fa.fa-ellipsis-h
+                
+              
+              
