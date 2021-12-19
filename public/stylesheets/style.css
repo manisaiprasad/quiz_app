@@ -347,3 +347,29 @@ label {
   color: green;
   cursor: pointer
 }
+
+.activity-done {
+  font-weight: 600;
+  color: #e8e1e1
+}
+
+.list-group li {
+  margin-bottom: 12px
+}
+
+.list li {
+  list-style: none;
+  padding: 20px;
+  border: 1px solid #e3dada;
+  margin-top: 12px;
+  border-radius: 5px;
+  background: #fff
+}
+
+.date-time {
+  font-size: 12px
+}
+
+
+
+
