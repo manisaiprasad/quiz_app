@@ -43,7 +43,7 @@ function getUser(db, user_id) {
 
 /* GET home page. */
 router.get('/', checkAuthenticated,  function(req, res, next) {
-  db.select('*').from('quiz').then(quiz => {
+  db.select('*').from('quiz').where('is_complete',1).then(quiz => {
     res.render('index', { title: 'Quiz', quizs: quiz, username: req.user.user_name});
   })
 });
@@ -114,7 +114,9 @@ router.route('/new_quiz/:quiz_name/question/:q_no')
           const questions = await insertQuestion(db, { question, answer, option1, option2, option3, option4, quiz_id });
           
           if (req.params.q_no == parseInt(req.body.number_of_questions)) {
-            res.redirect('/');
+            db.update({is_complete: 1}).into('quiz').where('quiz_id', quiz_id).then(quiz => {
+              res.redirect('/');
+            })
           }
 
           let new_q_no = parseInt(req.params.q_no) + parseInt(1);
