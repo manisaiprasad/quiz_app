@@ -17,5 +17,93 @@ block content
               a.active.active-first(href='/profile') Profile
             li
               a(href='/logout') logout
-  .container 
-    h1(style="text-align: center; margin-top: 40px;color: #fff;") Hello #{username}! <br><br>  We are working on your profile page
+  .container.d-flex.justify-content-center
+    .col-md-10
+      .container.user-profile
+        form(method='post')
+          .row
+            .col-md-4
+              .profile-img
+                img(src='/images/user.png' alt='')
+                .file.btn.btn-lg.btn-primary
+                  | Change Photo
+                  input(type='file' name='file')
+            .col-md-6
+              .profile-head
+                h5
+                  | #{user.full_name}
+                h6
+                  | #{profile.profession || 'Add Profession'}
+                p.proile-rating
+                  | #{profile.bio || 'Add Bio'}
+                ul#myTab.nav.nav-tabs(role='tablist')
+                  li.nav-item
+                    a#home-tab.nav-link.active(data-toggle='tab' href='#profile' role='tab' aria-controls='profile' aria-selected='true') Profile Details
+                  li.nav-item
+                    a#profile-tab.nav-link(data-toggle='tab' href='#created' role='tab' aria-controls='created' aria-selected='false') Quizes Created
+                  li.nav-item
+                    a#profile-tab.nav-link(data-toggle='tab' href='#pending' role='tab' aria-controls='pending' aria-selected='false') Quizes Pending
+            .col-md-2
+              input.profile-edit-btn(type='submit' name='btnAddMore' value='Edit Profile')
+          .row
+            .col-md-4
+              .profile-work
+                p Contact 
+                a(href='') Website Link              
+                p SKILLS
+                a(href='') Programming
+                br
+                a(href='') General Knowledge
+            .col-md-8
+              #myTabContent.tab-content.profile-tab
+                #profile.tab-pane.fade.show.active(role='tabpanel' aria-labelledby='home-tab')
+                  .row
+                    .col-md-6
+                      label User Id
+                    .col-md-6
+                      p #{user.user_name}
+                  .row
+                    .col-md-6
+                      label Name
+                    .col-md-6
+                      p #{user.full_name}
+                  .row
+                    .col-md-6
+                      label Email
+                    .col-md-6
+                      p #{user.email}
+                  .row
+                    .col-md-6
+                      label Profession
+                    .col-md-6
+                      p #{profile.profession || 'Add Profession'} 
+                #created.tab-pane.fade(role='tabpanel' aria-labelledby='profile-tab')
+                  .row
+                    .col-md-10
+                      for quiz in quizes
+                        if quiz.is_complete == true 
+                          .card 
+                            .card-body
+                              p #{quiz.quiz_name}
+                              span #{quiz.desc}
+                              .action.d-flex.justify-content-between.mt-2.align-items-center
+                                .reply.px-4
+                                  a(href="")  View LeaderBoard
+                                  span.dots
+                                  a(href="") Revoke for public
+                                                  
+                #pending.tab-pane.fade(role='tabpanel' aria-labelledby='profile-tab')
+                  .row
+                    .col-md-10
+                      for quiz in quizes
+                        if quiz.is_complete == false
+                          .card 
+                            .card-body
+                              p #{quiz.quiz_name}
+                              span #{quiz.desc}
+                              .action.d-flex.justify-content-between.mt-2.align-items-center
+                                .reply.px-4
+                                  a(href="")  Complete Quiz
+                                  span.dots
+                                  a(href="") Delete Quiz
+                        
