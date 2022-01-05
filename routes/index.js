@@ -248,8 +248,12 @@ router.route('/leaderboard/:quiz_id')
 
 router.route('/profile')
   .get( checkAuthenticated, function(req, res) {
-    res.render('profile',{username: req.user.user_name})
-  })
+    db('users').join('quiz','users.id','=','quiz.created_by').join('profile_details','users.id','=','profile_details.user_id').select('*').where('users.id', req.user.id).then(user => {
+      console.log(user);
+      res.render('profile', {user: user})
+    }
+  )
+})
   
 
 router.route('/search')
