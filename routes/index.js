@@ -57,7 +57,7 @@ router.route('/signup')
     try {
       const { email, password, full_name, user_name } = req.body;
       const hashedPassword = await bcrypt.hash(password, 10);
-      const user = await insertUser(db, { email, password: hashedPassword, full_name, user_name });
+      const user = await insertUser(db, { email, password_digest: hashedPassword, full_name, user_name });
       res.redirect('/login');
     } catch (err) {
       console.log(err);

@@ -8,7 +8,7 @@ function intialize(passport) {
             if (user == null) {
                 return done(null, false, { message: 'No user with that email' });
             }
-            if (!bcrypt.compareSync(password, user.password)) {
+            if (!bcrypt.compareSync(password, user.password_digest)) {
                 return done(null, false, { message: 'Password incorrect' });
             }
             return done(null, user);
